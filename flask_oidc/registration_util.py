@@ -1,3 +1,5 @@
+# Copyright (c) 2022 -, VestiaireCollective
+# Copyright (c) 2014-2015, Erica Ehrhardt
 # Copyright (c) 2016, Patrick Uiterwijk <patrick@puiterwijk.org>
 # All rights reserved.
 #
@@ -22,76 +24,67 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+# standard library
 import argparse
 import json
 import logging
 import os.path
 import sys
 
-from flask_oidc import discovery
-from flask_oidc import registration
+# flask providers - flask oidc
+from flask_oidc import discovery, registration
 
 logging.basicConfig()
-LOG = logging.getLogger("oidc-register")
+logger = logging.getLogger("oidc-register")
 
 
 def _parse_args():
-    parser = argparse.ArgumentParser(description='Help register an OpenID '
-                                     'Client')
-    parser.add_argument('provider_url',
-                        help='Base URL to the provider to register at')
-    parser.add_argument('application_url',
-                        help='Base URL to the application')
-    parser.add_argument('--token-introspection-uri',
-                        help='Token introspection URI')
-    parser.add_argument('--output-file', default='client_secrets.json',
-                        help='File to write client info to')
-    parser.add_argument('--debug', action='store_true')
+    parser = argparse.ArgumentParser(description="Help register an OpenID " "Client")
+    parser.add_argument("provider_url", help="Base URL to the provider to register at")
+    parser.add_argument("application_url", help="Base URL to the application")
+    parser.add_argument("--token-introspection-uri", help="Token introspection URI")
+    parser.add_argument("--output-file", default="client_secrets.json", help="File to write client info to")
+    parser.add_argument("--debug", action="store_true")
     return parser.parse_args()
 
 
 def main():
     args = _parse_args()
     if os.path.exists(args.output_file):
-        print('Output file exists. Please provide other filename')
+        logger.exception("Output file exists. Please provide other filename")
         return 1
 
     if args.debug:
-        LOG.setLevel(logging.DEBUG)
+        logger.setLevel(logging.DEBUG)
 
-    redirect_uris = ['%s/oidc_callback' % args.application_url]
+    redirect_uris = [f"{args.application_url}/oidc_callback"]
     registration.check_redirect_uris(redirect_uris)
     try:
         OP = discovery.discover_OP_information(args.provider_url)
     except Exception as ex:
-        print('Error discovering OP information')
-        if args.debug:
-            print(ex)
-            LOG.exception("Error caught when discovering OP information:")
+        logger.exception("Error discovering OP information")
+        logger.exception(f"Error caught when discovering OP information: {ex}")
         return 1
     if args.debug:
-        print('Provider info: %s' % OP)
+        print(f"Provider info: {OP}")
     try:
         reg_info = registration.register_client(OP, redirect_uris)
     except Exception as ex:
-        print('Error registering client')
-        if args.debug:
-            print(ex)
-            LOG.exception("Error caught when registering the client:")
+        logger.exception("Error registering client")
+        logger.exception(f"Error caught when registering the client: {ex}")
         return 1
-    if args.debug:
-        print('Registration info: %s' % reg_info)
+
+    logger.debug(f"Registration info: {reg_info}" % reg_info)
 
     if args.token_introspection_uri:
-        reg_info['web']['token_introspection_uri'] = \
-            args.token_introspection_uri
+        reg_info["web"]["token_introspection_uri"] = args.token_introspection_uri
 
-    with open(args.output_file, 'w') as outfile:
+    with open(args.output_file, "w") as outfile:
         outfile.write(json.dumps(reg_info))
-        print('Client information file written')
+        logger.info("Client information file written")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     retval = main()
     if retval:
         sys.exit(retval)

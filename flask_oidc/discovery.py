@@ -1,3 +1,5 @@
+# Copyright (c) 2022 -, VestiaireCollective
+# Copyright (c) 2014-2015, Erica Ehrhardt
 # Copyright (c) 2016, Patrick Uiterwijk <patrick@puiterwijk.org>
 # All rights reserved.
 #
@@ -22,8 +24,11 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+
+# pypi/conda library
 import httplib2
 
+# flask providers - flask oidc
 from flask_oidc import _json_loads
 
 
@@ -39,6 +44,5 @@ def discover_OP_information(OP_uri):
 
     .. versionadded:: 1.0
     """
-    _, content = httplib2.Http().request(
-        '%s/.well-known/openid-configuration' % OP_uri)
+    _, content = httplib2.Http().request(f"{OP_uri}/.well-known/openid-configuration")
     return _json_loads(content)
