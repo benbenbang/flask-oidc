@@ -55,8 +55,8 @@ oidc = OpenIDConnect(app)
 @app.route("/")
 def hello_world():
     if oidc.user_loggedin:
-        return ('Hello, %s, <a href="/private">See private</a> ' '<a href="/logout">Log out</a>') % oidc.user_getfield(
-            "email"
+        return (
+            f"Hello, {oidc.user_getfield('email')}, <a href='/private'>See private</a> ' '<a href='/logout'>Log out</a>"
         )
     else:
         return 'Welcome anonymous, <a href="/private">Log in</a>'
@@ -66,13 +66,13 @@ def hello_world():
 @oidc.require_login
 def hello_me():
     info = oidc.user_getinfo(["email", "openid_id"])
-    return 'Hello, %s (%s)! <a href="/">Return</a>' % (info.get("email"), info.get("openid_id"))
+    return f"Hello, {info.get('email')} ({info.get('openid_id')})! <a href=" / ">Return</a>"
 
 
 @app.route("/api")
 @oidc.accept_token(True, ["openid"])
 def hello_api():
-    return json.dumps({"hello": "Welcome %s" % g.oidc_token_info["sub"]})
+    return json.dumps({"hello": f"Welcome {g.oidc_token_info['sub']}"})
 
 
 @app.route("/logout")
