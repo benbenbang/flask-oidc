@@ -191,8 +191,7 @@ class OpenIDConnect(object):
         content = app.config["OIDC_CLIENT_SECRETS"]
         if isinstance(content, dict):
             return content
-        else:
-            return _json_loads(open(content, "r").read())
+        return _json_loads(open(content, "r").read())
 
     @property
     def user_loggedin(self):
@@ -253,9 +252,6 @@ class OpenIDConnect(object):
                         all_info = {}
                 if field in all_info:
                     info[field] = all_info[field]
-                else:
-                    # We didn't get this information
-                    pass
         return info
 
     def get_access_token(self):
@@ -356,8 +352,8 @@ class OpenIDConnect(object):
         except jwt.InvalidSignatureError:
             logger.info("Signature invalid for ID token cookie", exc_info=True)
             return None
-        except:
-            logger.info("Token cookie JWT error", exc_info=True)
+        except Exception:
+            logger.info(f"Token cookie JWT error", exc_info=True)
             return None
 
     def set_cookie_id_token(self, id_token):

@@ -78,8 +78,8 @@ class MockHttp:
                 token_info["sub"] = "valid_sub"
                 token_info["aud"] = "TheirClient"
             return MockHttpResponse(), json.dumps(token_info)
-        else:
-            raise Exception("Non-recognized path %s requested" % path)
+
+        raise Exception(f"Non-recognized path {path} requested")
 
 
 @pytest.fixture
@@ -87,20 +87,21 @@ def make_test_client():
     """
     :return: A Flask test client for the test app, and the mocks it uses.
     """
-    app = create_app(
-        {
-            "SECRET_KEY": "SEEEKRIT",
-            "TESTING": True,
-            "OIDC_CLIENT_SECRETS": client_secrets_fp.read_text(),
-        },
-        {},
-    )
-    test_client = app.test_client()
 
-    return test_client
+    def create_cli():
+        app = create_app(
+            {
+                "SECRET_KEY": "SEEEKRIT",
+                "TESTING": True,
+                "OIDC_CLIENT_SECRETS": client_secrets_fp,
+            },
+            {},
+        )
+        return app.test_client()
+
+    return create_cli
 
 
-@pytest.fixture
 def callback_url_for(response):
     """
     Take a redirect to the IdP and turn it into a redirect from the IdP.
@@ -113,15 +114,15 @@ def callback_url_for(response):
     return callback_url
 
 
-@pytest.mark.unittest
-def test_signin(mocker):
+@pytest.mark.unittests
+def test_signin(make_test_client, mocker):
     """
     Happy path authentication test.
     """
     current_time = time.time()
 
     mocker.patch("time.time").return_value = current_time
-    mocker.patch("httplib2.Http").return_value = MockHttp
+    mocker.patch("httplib2.Http").return_value = MockHttp()
 
     test_client = make_test_client()
 
@@ -154,15 +155,15 @@ def test_signin(mocker):
     assert page_text == "mock_refresh_token", "Refresh token expected"
 
 
-@pytest.mark.unittest
-def test_refresh(mocker):
+@pytest.mark.unittests
+def test_refresh(make_test_client, mocker):
     """
     Test token expiration and refresh.
     """
     current_time = time.time()
 
     mocker.patch("time.time").return_value = current_time
-    mocker.patch("httplib2.Http").return_value = MockHttp
+    mocker.patch("httplib2.Http").return_value = MockHttp()
 
     test_client = make_test_client()
 
@@ -224,31 +225,37 @@ def _check_api_token_handling(test_client, api_path):
     assert resp.status_code == 401, "Token should be refused"
 
 
-@pytest.mark.unittest
-def test_api_token(mocker):
+@pytest.mark.unittests
+def test_api_token(make_test_client, mocker):
     current_time = time.time()
 
     mocker.patch("time.time").return_value = current_time
-    mocker.patch("httplib2.Http").return_value = MockHttp
+    mocker.patch("httplib2.Http").return_value = MockHttp()
 
     test_client = make_test_client()
 
     _check_api_token_handling(test_client, "/api")
 
 
-@pytest.mark.unittest
-def test_api_token_with_external_rendering(mocker):
+@pytest.mark.unittests
+def test_api_token_with_external_rendering(make_test_client, mocker):
     current_time = time.time()
 
     mocker.patch("time.time").return_value = current_time
-    mocker.patch("httplib2.Http").return_value = MockHttp
+    mocker.patch("httplib2.Http").return_value = MockHttp()
 
     test_client = make_test_client()
 
     _check_api_token_handling(test_client, "/external_api")
 
 
-def test_validate_token_return_false():
+@pytest.mark.unittests
+def test_validate_token_return_false(make_test_client, mocker):
+    current_time = time.time()
+
+    mocker.patch("time.time").return_value = current_time
+    mocker.patch("httplib2.Http").return_value = MockHttp()
+
     test_client = make_test_client()
 
     # flask providers - flask oidc
