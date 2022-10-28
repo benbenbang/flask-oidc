@@ -1,8 +1,11 @@
 [tool.poetry]
 name = "flask-providers-oidc"
 version = "1.2.0"
-description = ""
-authors = ["benbenbang <ben.chen@vestiairecollective.com>"]
+description = "Fork version flask oidc"
+authors = ["benbenbang <bn@benbenbang.io>"]
+maintainers = [
+    "benbenbang <bn@benbenbang.io>",
+]
 readme = "README.rst"
 packages = [
     {include = "flask_oidc"}
