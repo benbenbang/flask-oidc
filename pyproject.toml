@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flask-providers-oidc"
-version = "1.0.0"
+version = "1.2.0"
 description = ""
 authors = ["benbenbang <ben.chen@vestiairecollective.com>"]
 readme = "README.rst"
