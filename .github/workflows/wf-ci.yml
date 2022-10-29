@@ -36,7 +36,7 @@ jobs:
         architecture: x64
     - name: Install dependencies
       run: |
-        curl -sSL https://install.python-poetry.org | POETRY_HOME=${POETRY_HOME} - --version 1.2.0
+        curl -sSL https://install.python-poetry.org | POETRY_HOME=${POETRY_HOME} python - --version 1.2.0
         poetry --version
         python -c "import sys; print(f'Running test with py version: {sys.version}')"
         poetry export --with dev --with tests --output requirements.txt --without-hashes
