@@ -15,7 +15,7 @@ from oidc import OpenIDConnect
 ...
 ```
 
-## Original Readme
+## Description
 
 [OpenID Connect](https://openid.net/connect/) support for [Flask](http://flask.pocoo.org/).
 
@@ -25,7 +25,3 @@ It has been tested with:
 
 -   [Google+ Login](https://developers.google.com/accounts/docs/OAuth2Login)
 -   [Ipsilon](https://ipsilon-project.org/)
-
-# Project status
-
-This project is in active development.
