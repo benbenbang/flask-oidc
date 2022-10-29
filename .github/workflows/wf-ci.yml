@@ -43,7 +43,7 @@ jobs:
         pip install -r requirements.txt
     - name: Run pytests
       run: |
-        python -m pytest -k ${TEST_TYPE} -vvv --cov --cov-config=tests/.coveragerc --junitxml=autoslack-${TEST_TYPE}.xml
+        python -m pytest -k ${TEST_TYPE} -vvv --cov --junitxml=${TEST_TYPE}.xml
       env:
         POETRY_HOME: /opt/poetry
         PATH: $POETRY_HOME/bin/:$PATH
