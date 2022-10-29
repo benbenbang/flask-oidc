@@ -2,7 +2,7 @@
 
 ## Forked Version
 
-[![image](https://img.shields.io/pypi/v/flask-providers-oidc.svg?style=flat&color=yellow)](https://pypi.python.org/pypi/flask-oidc) ![https://github.com/benbenbang/flask-oidc/actions/workflows/wf-ci.yml/badge.svg](https://github.com/benbenbang/flask-oidc/actions/workflows/wf-ci.yml/badge.svg) ![https://img.shields.io/pypi/pyversions/flask-providers-oidc](https://img.shields.io/pypi/pyversions/flask-providers-oidc) ![https://img.shields.io/pypi/format/flask-providers-oidc](https://img.shields.io/pypi/format/flask-providers-oidc) ![https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
+[![image](https://img.shields.io/pypi/v/flask-providers-oidc.svg?style=flat)](https://pypi.python.org/pypi/flask-oidc) ![https://github.com/benbenbang/flask-oidc/actions/workflows/wf-ci.yml/badge.svg&flat](https://github.com/benbenbang/flask-oidc/actions/workflows/wf-ci.yml/badge.svg) ![https://img.shields.io/pypi/pyversions/flask-providers-oidc](https://img.shields.io/pypi/pyversions/flask-providers-oidc) ![https://img.shields.io/pypi/format/flask-providers-oidc&flat](https://img.shields.io/pypi/format/flask-providers-oidc) ![https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&flat)
 
 This project is forked from [flask-oidc](https://github.com/puiterwijk/flask-oidc), and is now renamed **flask-providers-oidc**
 
