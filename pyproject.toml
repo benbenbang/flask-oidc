@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "flask-providers-oidc"
-version = "1.2.0"
+version = "1.2.1"
 description = "Fork version flask oidc"
 authors = ["benbenbang <bn@benbenbang.io>"]
 maintainers = [
