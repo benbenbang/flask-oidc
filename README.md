@@ -11,7 +11,7 @@ This version uses `pyjwt` instead of `isdangerous`.
 No need to change the import:
 
 ```python
-from oidc import OpenIDConnect
+from flask_oidc import OpenIDConnect
 ...
 ```
 
